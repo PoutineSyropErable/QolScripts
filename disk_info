@@ -1,0 +1,13 @@
+df -h /
+echo ""
+
+
+df -h /home
+
+echo ""
+
+df -h /boot
+echo ""
+
+swapon --show
+echo ""

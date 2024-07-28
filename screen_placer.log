@@ -1,0 +1,1702 @@
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Executed command: xrandr --output HDMI-1 --pos 1920x0
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Executed command: xrandr --output HDMI-1 --pos -1920x0
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+Executed command: xrandr --output HDMI-1 --pos -1920x120
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+Executed command: xrandr --output HDMI-1 --pos 0x1200
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-60, -1080)
+Executed command: xrandr --output HDMI-1 --pos -60x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (42, -1080)
+Executed command: xrandr --output HDMI-1 --pos 42x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-24, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-42, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-42, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (30, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+Start HDMI position: (30, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (6, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-24, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (24, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+Executed command: ~/.config/polybar.old/polykill
+Start HDMI position: (24, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+Executed command: ~/.config/polybar.old/polykill
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (12, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+Executed command: ~/.config/polybar.old/polykill
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: ~/.config/polybar.old/polykill
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (18, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-96, -1068)
+Executed command: xrandr --output HDMI-1 --pos -96x-1068
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-36, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (12, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (30, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: notify-send -u low -t 5000 Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (66, -1080)
+Executed command: xrandr --output HDMI-1 --pos 66x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-12, -1080)
+Updated HDMI position: (0, -1080)
+Executed command: notify-send -u low -t 5000 Updated HDMI position: (0, -1080)
+Executed command: xrandr --output HDMI-1 --pos 0x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (12, -1080)
+Updated HDMI position: (0, -1080)
+Start HDMI position: (12, -1080)
+Updated HDMI position: (0, -1080)
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-132, -1080)
+Executed command: xrandr --output HDMI-1 --pos -132x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executed command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executed command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executed command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-150, -1080)
+Executed command: notify-send -u low -t 5000 Updated HDMI position: (-150, -1080) &
+Executed command: xrandr --output HDMI-1 --pos -150x-1080
+Executed command: /home/francois/QolScripts/touchscreen-fix.sh
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-30, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u low -t 5000 Updated HDMI position: (0, -1080) &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u low -t '5000 Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1062)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u low -t '5000 Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u low -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (-48, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (54, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (24, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (6, -1074)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (6, 1200)
+Updated HDMI position: (0, 1200)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, 1200)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x1200
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'DP-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'DP-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'DP-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'DP-1' | awk '{print $3}'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (355, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (474, 266)
+Start DP-1 position: (-243, -1436)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (-243, -1436)' &
+The command worked
+Executing command: xrandr --output DP-1 --pos -243x-1436
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+Start DP-1 position: (1917, 59)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1917, 59)' &
+The command worked
+Executing command: xrandr --output DP-1 --pos 1917x59
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (355, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (474, 266)
+Start DP-1 position: (-2559, -356)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (-2559, -356)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr --output DP-1 --pos -2559x-356
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+Start DP-1 position: (-286, -1436)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (-286, -1436)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr --output DP-1 --pos -286x-1436
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+Start DP-1 position: (1917, -189)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1917, -189)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1917x-189
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep 'eDP-1' | awk '{print $4}'
+The command worked
+Executing command: xrandr | grep 'HDMI-1' | awk '{print $3}'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI position: (0, -1080)
+Updated HDMI position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (426, 240)
+Start DP-1 position: (1920, -1434)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1920, -1434)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1920x-1434
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (426, 240)
+Start DP-1 position: (1920, -1182)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1920, -1182)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1920x-1182
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI-1 position: (6, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (355, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (474, 266)
+Start DP-1 position: (1917, -205)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1917, -205)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1917x-205
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI-1 position: (0, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (355, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (474, 266)
+Start DP-1 position: (1917, -183)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1917, -183)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1917x-183
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI-1 position: (-6, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (355, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (474, 266)
+Start DP-1 position: (1917, -205)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1917, -205)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1917x-205
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen-fix.sh
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI-1 position: (0, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (355, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (474, 266)
+Start DP-1 position: (1917, -194)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1917, -194)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1917x-194
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI-1 position: (-12, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (355, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (474, 266)
+Start DP-1 position: (1917, -356)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1917, -356)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1917x-356
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (355, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (474, 266)
+Start DP-1 position: (1917, -172)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1917, -172)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1917x-172
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI-1 position: (0, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (355, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (474, 266)
+Start DP-1 position: (1917, -183)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1917, -183)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of HDMI-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1917x-183
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --pos
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+DP-1 (width, height): (2560, 1440)
+DP-1 Box (Width, Height): (426, 240)
+Start DP-1 position: (1920, -828)
+Executing command: notify-send -u normal -t 5000 'Updated DP-1 position: (1920, -828)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output DP-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output DP-1 --pos 1920x-828
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --pos
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI-1 position: (6, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --pos
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI-1 position: (12, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --pos
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1080)
+eDP-1 Box (Width, Height): (355, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (355, 200)
+Start HDMI-1 position: (5, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --pos
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI-1 position: (0, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --pos
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --pos
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --pos
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+
+
+-----------------------------------------------------------------------------------------
+
+Executing command: xrandr --output eDP-1 --pos
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr | grep -P '\beDP-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+Executing command: xrandr | grep -P '\bHDMI-1\b' | grep -P -o '[0-9]+x[0-9]+(?=\+)'
+The command worked
+eDP-1 (width, height): (1920, 1200)
+eDP-1 Box (Width, Height): (320, 200)
+HDMI-1 (width, height): (1920, 1080)
+HDMI-1 Box (Width, Height): (320, 180)
+Start HDMI-1 position: (0, -1080)
+Updated HDMI-1 position: (0, -1080)
+Executing command: notify-send -u normal -t 5000 'Updated HDMI-1 position: (0, -1080)' &
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
+Executing command: xrandr --output HDMI-1 --auto --right-of eDP-1
+The command worked
+Executing command: xrandr --output HDMI-1 --pos 0x-1080
+The command worked
+Executing command: /home/francois/QolScripts/touchscreen_fix.sh
+The command worked
+Executing command: xrandr --output eDP-1 --primary --auto
+The command worked
