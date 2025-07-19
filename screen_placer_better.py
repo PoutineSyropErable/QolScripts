@@ -6,6 +6,7 @@ from tkinter import messagebox
 from tkinter import simpledialog
 
 import subprocess, os, sys, argparse
+
 import numpy as np
 import time
 import re
@@ -15,6 +16,7 @@ from colorsys import hls_to_rgb
 import numpy as np
 
 MAIN_MONITOR = "DP-1"
+from hyprland_sig import env
 
 
 def notify_send(summary: str, body: str = "", urgency: str = "normal", timeout: int = 5000):
@@ -534,6 +536,22 @@ def generate_hypr_monitor_config(monitors: List[Monitor]) -> str:
     return "\n".join(lines)
 
 
+def apply_hypr_monitor_config(monitors: List[Monitor]) -> None:
+    """
+    Generate and execute hyprctl dispatch monitor commands to set monitor layout immediately.
+    """
+    for mon in monitors:
+        name = mon.name
+        width, height = mon.resolution
+        x, y = map(int, mon.position)
+        refresh = int(round(mon.refresh_rate))
+
+        cmd = ["hyprctl", "dispatch", "monitor", f"{name},{width}x{height}@{refresh},{x}x{y},1"]
+
+        print(f"Executing: {' '.join(cmd)}")
+        subprocess.run(cmd, check=True, env=env)
+
+
 if __name__ == "__main__":
     print("\n\n====Start of program=====\n\n")
     monitors: List[Monitor] = create_monitors()
@@ -565,3 +583,9 @@ if __name__ == "__main__":
     meta_code = generate_hypr_monitor_config(monitors)
     print("\n")
     print(meta_code)
+
+    APPLY_RIGHT_NOW = False
+    # it doesn't work anyway, and it's fine
+    if APPLY_RIGHT_NOW:
+        print("\n\n")
+        apply_hypr_monitor_config(monitors)
