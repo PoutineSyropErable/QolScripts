@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from typing import List, Dict
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
@@ -10,6 +11,7 @@ import re
 
 import random
 from colorsys import hls_to_rgb
+import numpy as np
 
 
 def notify_send(summary: str, body: str = "", urgency: str = "normal", timeout: int = 5000):
@@ -90,9 +92,11 @@ class Monitor:
         :param resolution: tuple (width, height) in pixels
         """
         self.name = name
-        self.position = position  # (x, y)
+        self.position: np.ndarray = np.array(list(position))  # (x, y)
         self.resolution = resolution  # (width, height)
         self.color = self._random_light_color()
+        self.canvas_id = None  # stores the canvas rectangle ID
+        self.text_id = None  # stores the canvas text ID
 
     def _random_light_color(self):
         """
@@ -112,7 +116,7 @@ class Monitor:
         return f"Monitor(name={self.name}, position={self.position}, " f"resolution={self.resolution}, color={self.color})"
 
 
-def create_monitors():
+def create_monitors() -> List[Monitor]:
     best_modes = get_best_monitor_modes()
     monitors = []
     x_offset = 0
@@ -191,6 +195,13 @@ def draw_monitors(monitors):
     root = tk.Tk()
     root.title("Monitor Layout")
 
+    def quit_program(event=None):
+        root.destroy()
+
+    root.bind("<Escape>", quit_program)
+
+    drag_data = {"x": 0, "y": 0, "item": None, "monitor": None}
+
     def on_ready():
         window_width = root.winfo_width()
         window_height = root.winfo_height()
@@ -223,7 +234,7 @@ def draw_monitors(monitors):
             canvas_pos_x + 10,
             canvas_pos_y + 20,
             fill="red",
-            outline="blue",
+            outline="green",
             width=2,
         )
 
@@ -237,6 +248,9 @@ def draw_monitors(monitors):
         monitor_offset_y = (virtual_height - monitor_total_height) / 2 - max_height
 
         print("monitor_offset_x, y = ", monitor_offset_x, monitor_offset_y)
+
+        scaled_xs = []
+        scaled_ys = []
         for mon in monitors:
             x, y = mon.position
             w, h = mon.resolution
@@ -251,7 +265,7 @@ def draw_monitors(monitors):
             scaled_w = scale * w
             scaled_h = scale * h
 
-            canvas.create_rectangle(
+            rect = canvas.create_rectangle(
                 scaled_x,
                 scaled_y,
                 scaled_x + scaled_w,
@@ -260,34 +274,118 @@ def draw_monitors(monitors):
                 outline="white",
                 width=2,
             )
-            canvas.create_text(
+            scaled_xs.append(scaled_x)
+            scaled_xs.append(scaled_x + scaled_w)
+
+            scaled_ys.append(scaled_y)
+            scaled_ys.append(scaled_y + scaled_h)
+
+            text = canvas.create_text(
                 scaled_x + scaled_w / 2,
                 scaled_y + scaled_h / 2,
                 text=mon.name,
                 fill="black",
                 font=("Arial", max(8, int(14 * scale)), "bold"),
             )
+            mon.canvas_id = rect
+            mon.text_id = text
+
+        left_corner = np.array([min(scaled_xs), min(scaled_ys)])
+        right_bottom_corner = np.array([max(scaled_xs), max(scaled_ys)])
+        scaled_size = right_bottom_corner - left_corner
+
+        bounding_rect_id = None
+        bounding_rect_id = canvas.create_rectangle(
+            left_corner[0], left_corner[1], right_bottom_corner[0], right_bottom_corner[1], outline="blue", fill="", width=2
+        )
+
+        def update_bounding_box():
+            scaled_xs = []
+            scaled_ys = []
+            for mon in monitors:
+                coords = canvas.coords(mon.canvas_id)
+                x1, y1, x2, y2 = coords
+                scaled_xs.extend([x1, x2])
+                scaled_ys.extend([y1, y2])
+
+            left_corner = np.array([min(scaled_xs), min(scaled_ys)])
+            right_bottom_corner = np.array([max(scaled_xs), max(scaled_ys)])
+
+            canvas.coords(bounding_rect_id, left_corner[0], left_corner[1], right_bottom_corner[0], right_bottom_corner[1])
+
+        def on_start_drag(event):
+            widget = event.widget
+            item = widget.find_closest(event.x, event.y)[0]
+            for mon in monitors:
+                if mon.canvas_id == item:
+                    drag_data["item"] = item
+                    drag_data["monitor"] = mon
+                    drag_data["x"] = event.x
+                    drag_data["y"] = event.y
+                    break
+
+        def on_drag(event):
+            if drag_data["item"] is not None:
+                dx = event.x - drag_data["x"]
+                dy = event.y - drag_data["y"]
+                drag_data["x"] = event.x
+                drag_data["y"] = event.y
+
+                canvas.move(drag_data["monitor"].canvas_id, dx, dy)
+                canvas.move(drag_data["monitor"].text_id, dx, dy)
+
+        def on_end_drag(event):
+            if drag_data["monitor"] is not None:
+                mon = drag_data["monitor"]
+                coords = canvas.coords(mon.canvas_id)  # [x1, y1, x2, y2]
+                x1, y1, x2, y2 = coords
+                canvas_width = x2 - x1
+                canvas_height = y2 - y1
+
+                # Reverse the scale and offset applied during drawing
+                new_adj_x = (x1 - canvas_pos_x) / scale
+                new_adj_y = (y1 - canvas_pos_y) / scale
+
+                new_x = new_adj_x - max_width - monitor_offset_x
+                new_y = new_adj_y - max_height - monitor_offset_y
+
+                # Update the monitor object
+                mon.position = (round(new_x), round(new_y))
+                print(f"Updated position of {mon.name}: {mon.position}")
+            drag_data["item"] = None
+            drag_data["monitor"] = None
+            update_bounding_box()
+
+        canvas.tag_bind("all", "<ButtonPress-1>", on_start_drag)
+        canvas.tag_bind("all", "<B1-Motion>", on_drag)
+        canvas.tag_bind("all", "<ButtonRelease-1>", on_end_drag)
+        # end of on ready
+        return
 
     canvas = tk.Canvas(root, bg="white")
     canvas.pack(fill="both", expand=True)
     root.after(500, on_ready)
     root.mainloop()
-    # Calculate uniform scale factor to fit virtual canvas into window canvas
-    return
-
-    # Calculate horizontal monitor offset for centering middle monitor(s)
-
-    root.mainloop()
-    return
-
-    # Draw monitors scaled, offset by margin + monitor offset + centered in window
-
-    root.mainloop()
 
 
 if __name__ == "__main__":
     print("\n\n====Start of program=====\n\n")
-    monitors = create_monitors()
-    for m in monitors:
-        print(m)
+    monitors: List[Monitor] = create_monitors()
     draw_monitors(monitors)
+    positions = {}
+    all_pos = []
+    for m in monitors:
+        positions[m.name] = np.array(list(m.position))
+        print(positions[m.name])
+        all_pos.append(positions[m.name])
+
+    all_pos = np.array(all_pos)
+    print(f"all_pos = \n{all_pos}\n")
+    col_min: np.ndarray = np.min(all_pos, axis=0)
+    col_max: np.ndarray = np.max(all_pos, axis=0)
+    print(f"col_min = {col_min}")
+    print(f"col_max = {col_max}")
+
+    for m in monitors:
+        m.position = m.position - col_min
+        print(m)
