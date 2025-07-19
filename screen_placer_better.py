@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-from typing import List, Dict
+from typing import List, Dict, Tuple
+from numpy.typing import NDArray
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
@@ -12,6 +13,8 @@ import re
 import random
 from colorsys import hls_to_rgb
 import numpy as np
+
+MAIN_MONITOR = "DP-1"
 
 
 def notify_send(summary: str, body: str = "", urgency: str = "normal", timeout: int = 5000):
@@ -85,17 +88,18 @@ def get_best_monitor_modes():
 
 
 class Monitor:
-    def __init__(self, name, position, resolution):
+    def __init__(self, name: str, position: Tuple[int, int], resolution: Tuple[int, int], refresh_rate: float):
         """
         :param name: str, monitor identifier
         :param position: tuple (x, y) in pixels
         :param resolution: tuple (width, height) in pixels
         """
         self.name = name
-        self.position: np.ndarray = np.array(list(position))  # (x, y)
+        self.position: NDArray[np.float64] = np.array(list(position))  # (x, y)
         self.resolution = resolution  # (width, height)
         self.color = self._random_light_color()
         self.canvas_id = None  # stores the canvas rectangle ID
+        self.refresh_rate = refresh_rate
         self.text_id = None  # stores the canvas text ID
 
     def _random_light_color(self):
@@ -113,7 +117,10 @@ class Monitor:
         return f"#{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}"
 
     def __repr__(self):
-        return f"Monitor(name={self.name}, position={self.position}, " f"resolution={self.resolution}, color={self.color})"
+        return (
+            f"Monitor(name={self.name}, position={self.position}, resolution={self.resolution}, "
+            f"refresh_rate={self.refresh_rate}, color={self.color})"
+        )
 
 
 def create_monitors() -> List[Monitor]:
@@ -122,8 +129,15 @@ def create_monitors() -> List[Monitor]:
     x_offset = 0
     for name, (res_str, refresh) in best_modes.items():
         w, h = map(int, res_str.split("x"))
-        monitors.append(Monitor(name, (x_offset, 0), (w, h)))
+        monitors.append(Monitor(name, (x_offset, 0), (w, h), refresh))
         x_offset += w
+
+    # Move "DP-2" to the front if it exists
+    for i, mon in enumerate(monitors):
+        if mon.name == "DP-2":
+            dp2 = monitors.pop(i)
+            monitors.insert(0, dp2)
+            break
     return monitors
 
 
@@ -190,6 +204,14 @@ def calculate_monitor_offset(monitors):
         offset_x = center_x - mid_center_x
 
     return offset_x
+
+
+def draw_instructions(canvas, x=10, y=10):
+    instructions = ["ESC to stop", "Mouse to drag", "H to toggle horizontal align", "V to toggle vertical align"]
+    for i, line in enumerate(instructions):
+        canvas.create_text(
+            x, y + i * 20, text=line, fill="black", anchor="nw", font=("Arial", 12, "bold")  # north-west anchor, so x,y is top-left of text
+        )
 
 
 def draw_monitors(monitors):
@@ -476,7 +498,7 @@ def draw_monitors(monitors):
                 new_x = new_adj_x - max_width - monitor_offset_x
                 new_y = new_adj_y - max_height - monitor_offset_y
 
-                mon.position = (round(new_x), round(new_y))
+                mon.position = np.array([round(new_x), round(new_y)])
                 print(f"Updated position of {mon.name}: {mon.position}")
 
             drag_data["item"] = None
@@ -490,27 +512,56 @@ def draw_monitors(monitors):
     canvas = tk.Canvas(root, bg="white")
     canvas.pack(fill="both", expand=True)
     root.after(500, on_ready)
+    draw_instructions(canvas)
     root.mainloop()
+
+
+def generate_hypr_monitor_config(monitors: List[Monitor]) -> str:
+    """
+    Generate Hyprland monitor config lines from a list of Monitor objects.
+    Output lines like:
+    monitor=DP-1,2560x1440@60,0x0,1
+    """
+    lines = []
+    for mon in monitors:
+        name = mon.name
+        width, height = mon.resolution
+        x, y = map(int, mon.position)
+        refresh = int(round(mon.refresh_rate))
+
+        # Format as required by Hyprland
+        lines.append(f"monitor={name},{width}x{height}@{refresh},{x}x{y},1")
+    return "\n".join(lines)
 
 
 if __name__ == "__main__":
     print("\n\n====Start of program=====\n\n")
     monitors: List[Monitor] = create_monitors()
     draw_monitors(monitors)
-    positions = {}
+    positions: dict[str, np.ndarray] = {}
     all_pos = []
     for m in monitors:
-        positions[m.name] = np.array(list(m.position))
+        positions[m.name] = m.position
         print(positions[m.name])
         all_pos.append(positions[m.name])
 
-    all_pos = np.array(all_pos)
-    print(f"all_pos = \n{all_pos}\n")
-    col_min: np.ndarray = np.min(all_pos, axis=0)
-    col_max: np.ndarray = np.max(all_pos, axis=0)
-    print(f"col_min = {col_min}")
-    print(f"col_max = {col_max}")
+    # all_pos = np.array(all_pos)
+    # print(f"all_pos = \n{all_pos}\n")
+    # col_min: np.ndarray = np.min(all_pos, axis=0)
+    # col_max: np.ndarray = np.max(all_pos, axis=0)
+    # print(f"col_min = {col_min}")
+    # print(f"col_max = {col_max}")
 
+    assert MAIN_MONITOR in positions, "The main monitor should be in the positions"
+    dp1_pos = positions[MAIN_MONITOR].copy()
+    positions_tuple: Dict[str, Tuple[int, int]] = {}
     for m in monitors:
-        m.position = m.position - col_min
-        print(m)
+        # m.position = m.position - col_min
+        m.position -= dp1_pos
+        positions_tuple[m.name] = tuple(m.position.tolist())
+
+    print("======")
+    print(f"positions = \n{positions_tuple}\n")
+    meta_code = generate_hypr_monitor_config(monitors)
+    print("\n")
+    print(meta_code)
