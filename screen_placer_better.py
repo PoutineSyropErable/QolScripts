@@ -12,6 +12,19 @@ import random
 from colorsys import hls_to_rgb
 
 
+def notify_send(summary: str, body: str = "", urgency: str = "normal", timeout: int = 5000):
+    """
+    Sends a desktop notification using notify-send.
+
+    Args:
+        summary (str): The title of the notification.
+        body (str): Optional body text.
+        urgency (str): "low", "normal", or "critical".
+        timeout (int): Timeout in milliseconds.
+    """
+    subprocess.run(["notify-send", "--urgency", urgency, "--expire-time", str(timeout), summary, body])
+
+
 def list_available_monitor_names():
     # Use xrandr to get connected screens
     xrandr_output = subprocess.check_output(["xrandr"]).decode("utf-8")
@@ -114,7 +127,7 @@ def calculate_canvas_position(window_width, window_height, canvas_width, canvas_
     # center the canvas inside the window
 
     print(f"window_height = {window_height}")
-    print(f"canvas_height = {canvas_height}")
+    print(f"window_width = {window_width}\n")
     pos_x = max(0, (window_width - canvas_width) / 2)
     pos_y = max(0, (window_height - canvas_height) / 2)
     return pos_x, pos_y
@@ -156,10 +169,7 @@ def calculate_monitor_offset(monitors):
         center_x = total_width / 2
         offset_x = center_x - mid_center_x
 
-    # Vertical offset: keep as 0 for now (no vertical shift)
-    offset_y = 0
-
-    return offset_x, offset_y
+    return offset_x
 
 
 def draw_monitors(monitors):
@@ -175,76 +185,102 @@ def draw_monitors(monitors):
     # Virtual canvas size with margin for one extra monitor left/right/top/bottom
     virtual_width = sum_width + 2 * max_width
     virtual_height = sum_height + 2 * max_height
+    print(f"\nvirtual_width = {virtual_width}")
+    print(f"virtual_height = {virtual_height}\n")
 
     root = tk.Tk()
     root.title("Monitor Layout")
-    root.update_idletasks()  # Ensure geometry is calculated
-    window_width = root.winfo_width()
-    window_height = root.winfo_height()
 
-    print(f"window_width = {window_width}")
-    print(f"window_height = {window_height}")
+    def on_ready():
+        window_width = root.winfo_width()
+        window_height = root.winfo_height()
+        notify_send("Canvas", f"window_width = {window_width}, window_height = {window_height}")
 
-    canvas = tk.Canvas(root, width=window_width, height=window_height, bg="white")
-    # Create canvas inside window
-    canvas.pack()
+        scale_x = window_width / virtual_width
+        scale_y = window_height / virtual_height
+        scale = min(scale_x, scale_y)
+        print(f"scale = {scale}")
+        # Calculate canvas position (top-left) to center the scaled virtual canvas in window
+        center_canvas_width = virtual_width * scale
+        center_canvas_height = virtual_height * scale
+        notify_send("Canvas", f"center_canvas_width = {center_canvas_width}, center_canvas_height = {center_canvas_height}")
+        canvas_pos_x, canvas_pos_y = calculate_canvas_position(window_width, window_height, center_canvas_width, center_canvas_height)
+        print(f"canvas_pos_x = {canvas_pos_x}")
+        print(f"canvas_pos_y = {canvas_pos_y}")
+        canvas.create_rectangle(
+            canvas_pos_x,
+            canvas_pos_y,
+            canvas_pos_x + center_canvas_width,
+            canvas_pos_y + center_canvas_height,
+            fill="black",
+            outline="black",
+            width=2,
+        )
+
+        canvas.create_rectangle(
+            canvas_pos_x,
+            canvas_pos_y,
+            canvas_pos_x + 10,
+            canvas_pos_y + 20,
+            fill="red",
+            outline="blue",
+            width=2,
+        )
+
+        monitor_offset_x = calculate_monitor_offset(monitors)
+        min_y = min(mon.position[1] for mon in monitors)
+        max_y = max(mon.position[1] + mon.resolution[1] for mon in monitors)
+
+        monitor_total_height = max_y - min_y
+        print(f"monitor_total_height = {monitor_total_height}")
+
+        monitor_offset_y = (virtual_height - monitor_total_height) / 2 - max_height
+
+        print("monitor_offset_x, y = ", monitor_offset_x, monitor_offset_y)
+        for mon in monitors:
+            x, y = mon.position
+            w, h = mon.resolution
+
+            # Adjust position with margin and centering offsets
+            adj_x = x + max_width + monitor_offset_x
+            adj_y = y + max_height + monitor_offset_y
+
+            # Scale and offset to fit and center in canvas
+            scaled_x = scale * adj_x + canvas_pos_x
+            scaled_y = scale * adj_y + canvas_pos_y
+            scaled_w = scale * w
+            scaled_h = scale * h
+
+            canvas.create_rectangle(
+                scaled_x,
+                scaled_y,
+                scaled_x + scaled_w,
+                scaled_y + scaled_h,
+                fill=mon.color,
+                outline="white",
+                width=2,
+            )
+            canvas.create_text(
+                scaled_x + scaled_w / 2,
+                scaled_y + scaled_h / 2,
+                text=mon.name,
+                fill="black",
+                font=("Arial", max(8, int(14 * scale)), "bold"),
+            )
+
+    canvas = tk.Canvas(root, bg="white")
+    canvas.pack(fill="both", expand=True)
+    root.after(500, on_ready)
+    root.mainloop()
     # Calculate uniform scale factor to fit virtual canvas into window canvas
-    scale_x = window_width / virtual_width
-    scale_y = window_height / virtual_height
-    scale = min(scale_x, scale_y)
-    print(f"scale = {scale}")
-
-    # Calculate canvas position (top-left) to center the scaled virtual canvas in window
-    canvas_pos_x, canvas_pos_y = calculate_canvas_position(window_width, window_height, virtual_width * scale, virtual_height * scale)
+    return
 
     # Calculate horizontal monitor offset for centering middle monitor(s)
-    monitor_offset_x, monitor_offset_y = calculate_monitor_offset(monitors)
-    print(f"canvas_pos_x = {canvas_pos_x}")
-    print(f"canvas_pos_y = {canvas_pos_y}")
 
-    canvas.create_rectangle(
-        canvas_pos_x,
-        canvas_pos_y,
-        canvas_pos_x + window_width * scale,
-        canvas_pos_y + window_height * scale,
-        fill="black",
-        outline="black",
-        width=2,
-    )
     root.mainloop()
     return
 
     # Draw monitors scaled, offset by margin + monitor offset + centered in window
-    for mon in monitors:
-        x, y = mon.position
-        w, h = mon.resolution
-
-        # Adjust position with margin and centering offsets
-        adj_x = x + max_width + monitor_offset_x
-        adj_y = y + max_height + monitor_offset_y
-
-        # Scale and offset to fit and center in canvas
-        scaled_x = scale * adj_x + canvas_pos_x
-        scaled_y = scale * adj_y + canvas_pos_y
-        scaled_w = scale * w
-        scaled_h = scale * h
-
-        canvas.create_rectangle(
-            scaled_x,
-            scaled_y,
-            scaled_x + scaled_w,
-            scaled_y + scaled_h,
-            fill=mon.color,
-            outline="white",
-            width=2,
-        )
-        canvas.create_text(
-            scaled_x + scaled_w / 2,
-            scaled_y + scaled_h / 2,
-            text=mon.name,
-            fill="black",
-            font=("Arial", max(8, int(14 * scale)), "bold"),
-        )
 
     root.mainloop()
 
