@@ -137,6 +137,22 @@ def calculate_canvas_position(window_width, window_height, canvas_width, canvas_
     return pos_x, pos_y
 
 
+align_horizontal = True
+align_vertical = True
+
+
+def toggle_horizontal(event=None):
+    global align_horizontal
+    align_horizontal = not align_horizontal
+    print(f"Horizontal alignment: {align_horizontal}")
+
+
+def toggle_vertical(event=None):
+    global align_vertical
+    align_vertical = not align_vertical
+    print(f"Vertical alignment: {align_vertical}")
+
+
 def calculate_monitor_offset(monitors):
     """
     Calculate horizontal offset to center the monitors in the virtual canvas,
@@ -199,8 +215,33 @@ def draw_monitors(monitors):
         root.destroy()
 
     root.bind("<Escape>", quit_program)
+    root.bind("h", toggle_horizontal)
+    root.bind("v", toggle_vertical)
 
     drag_data = {"x": 0, "y": 0, "item": None, "monitor": None}
+
+    def get_rectangle_corners(canvas, rect_id) -> np.ndarray:
+        """
+        Given a Tkinter canvas and a rectangle canvas ID,
+        return the positions of the four corners as a 4x2 numpy array.
+
+        The order of corners returned is:
+        top-left, top-right, bottom-right, bottom-left
+        """
+        coords = canvas.coords(rect_id)  # [x1, y1, x2, y2]
+        if len(coords) != 4:
+            # Item does not exist or coords are invalid
+            raise ValueError(f"Invalid rectangle coords for item {rect_id}: {coords}")
+        x1, y1, x2, y2 = coords
+        corners = np.array(
+            [
+                [x1, y1],  # top-left
+                [x2, y1],  # top-right
+                [x2, y2],  # bottom-right
+                [x1, y2],  # bottom-left
+            ]
+        )
+        return corners
 
     def on_ready():
         window_width = root.winfo_width()
@@ -251,6 +292,7 @@ def draw_monitors(monitors):
 
         scaled_xs = []
         scaled_ys = []
+        all_mon_rects = {}
         for mon in monitors:
             x, y = mon.position
             w, h = mon.resolution
@@ -274,6 +316,7 @@ def draw_monitors(monitors):
                 outline="white",
                 width=2,
             )
+            all_mon_rects[mon] = rect
             scaled_xs.append(scaled_x)
             scaled_xs.append(scaled_x + scaled_w)
 
@@ -334,33 +377,115 @@ def draw_monitors(monitors):
                 canvas.move(drag_data["monitor"].canvas_id, dx, dy)
                 canvas.move(drag_data["monitor"].text_id, dx, dy)
 
+        def get_key_points(rect_coords: List[float]) -> np.ndarray:
+            """
+            Given [x1, y1, x2, y2], returns key points:
+            - corners: TL, TR, BR, BL
+            - edge midpoints: top, right, bottom, left
+            - center
+            Returns an (9, 2) array of points.
+            """
+            x1, y1, x2, y2 = rect_coords
+            cx = (x1 + x2) / 2
+            cy = (y1 + y2) / 2
+            return np.array(
+                [
+                    [x1, y1],  # top-left
+                    [x2, y1],  # top-right
+                    [x2, y2],  # bottom-right
+                    [x1, y2],  # bottom-left
+                    [cx, y1],  # top edge midpoint
+                    [x2, cy],  # right edge midpoint
+                    [cx, y2],  # bottom edge midpoint
+                    [x1, cy],  # left edge midpoint
+                    [cx, cy],  # center
+                ]
+            )
+
+        def get_other_monitors_keypoints_tensor(canvas, all_mon_rects, exclude_monitor) -> np.ndarray:
+            """
+            Returns a rank-3 tensor of shape (N, 9, 2), containing key points
+            from all monitors except the dragged one.
+
+            Each monitor contributes:
+            - 4 corners
+            - 4 edge midpoints
+            - 1 center
+            """
+            other_points = []
+            for mon, rect_id in all_mon_rects.items():
+                if mon == exclude_monitor:
+                    continue
+                coords = canvas.coords(rect_id)  # [x1, y1, x2, y2]
+                other_points.append(get_key_points(coords))  # shape (9, 2)
+            return np.array(other_points)  # shape (N, 9, 2)
+
+        def find_closest_alignment(dragged_keypoints: np.ndarray, others_tensor: np.ndarray) -> tuple:
+            """
+            Find the pair of points (from dragged and others) with the smallest Euclidean distance.
+
+            Args:
+                dragged_keypoints: (9, 2)
+                others_tensor: (N, 9, 2)
+
+            Returns:
+                delta (np.ndarray): vector to move dragged monitor (2,)
+                dragged_idx, monitor_idx, other_idx (ints): for debugging/inspection
+            """
+            # Compute all distances: shape (9, N, 9)
+            min_dist = float("inf")
+            best_delta = np.array([0.0, 0.0])
+            best_info = (-1, -1, -1, min_dist)  # drag_idx, monitor_idx, point_idx, dist
+
+            for i, drag_pt in enumerate(dragged_keypoints):  # (9,)
+                for j, mon_keypoints in enumerate(others_tensor):  # (N, 9, 2)
+                    for k, other_pt in enumerate(mon_keypoints):  # (9,)
+                        dist = np.linalg.norm(drag_pt - other_pt)
+                        if dist < min_dist:
+                            min_dist = dist
+                            best_delta = other_pt - drag_pt
+                            best_info = (i, j, k, dist)
+
+            return best_delta, best_info
+
         def on_end_drag(event):
             if drag_data["monitor"] is not None:
                 mon = drag_data["monitor"]
-                coords = canvas.coords(mon.canvas_id)  # [x1, y1, x2, y2]
-                x1, y1, x2, y2 = coords
-                canvas_width = x2 - x1
-                canvas_height = y2 - y1
 
-                # Reverse the scale and offset applied during drawing
+                # 1. Get dragged monitor's 9 key points
+                dragged_keypoints = get_key_points(canvas.coords(mon.canvas_id))  # shape (9, 2)
+
+                # 2. Get (N, 9, 2) keypoints of all *other* monitors
+                others_tensor = get_other_monitors_keypoints_tensor(canvas, all_mon_rects, mon)
+
+                # 3. Find best alignment and delta
+                delta, (drag_idx, mon_idx, point_idx, dist) = find_closest_alignment(dragged_keypoints, others_tensor)
+                print(f"Snapping dragged point {drag_idx} to monitor {mon_idx}'s point {point_idx} (dist = {dist:.2f})")
+                print(f"Delta = {delta}")
+
+                # 4. Move the dragged canvas rectangle and its text label
+                align_mask = np.array([align_horizontal, align_vertical])
+                delta *= align_mask
+                canvas.move(mon.canvas_id, delta[0], delta[1])
+                canvas.move(mon.text_id, delta[0], delta[1])
+
+                # 5. Update monitor position logically (from new canvas position)
+                x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
                 new_adj_x = (x1 - canvas_pos_x) / scale
                 new_adj_y = (y1 - canvas_pos_y) / scale
-
                 new_x = new_adj_x - max_width - monitor_offset_x
                 new_y = new_adj_y - max_height - monitor_offset_y
 
-                # Update the monitor object
                 mon.position = (round(new_x), round(new_y))
                 print(f"Updated position of {mon.name}: {mon.position}")
+
             drag_data["item"] = None
             drag_data["monitor"] = None
             update_bounding_box()
 
-        canvas.tag_bind("all", "<ButtonPress-1>", on_start_drag)
-        canvas.tag_bind("all", "<B1-Motion>", on_drag)
-        canvas.tag_bind("all", "<ButtonRelease-1>", on_end_drag)
-        # end of on ready
-        return
+        canvas.bind("<ButtonPress-1>", on_start_drag)
+        canvas.bind("<B1-Motion>", on_drag)
+        canvas.bind("<ButtonRelease-1>", on_end_drag)
 
     canvas = tk.Canvas(root, bg="white")
     canvas.pack(fill="both", expand=True)
