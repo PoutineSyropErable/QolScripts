@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
 from typing import List, Tuple, Dict, Literal
-from tkinter import Event
 
 import subprocess, os, sys, argparse
 
@@ -16,6 +15,7 @@ from colorsys import hls_to_rgb
 import numpy as np
 
 MAIN_MONITOR = "DP-1"
+WAYLAND_WINDOW_CREATION_TIME = 500
 from hyprland_sig import env
 
 
@@ -277,18 +277,16 @@ def calculate_monitor_offset(monitors):
 def draw_instructions(canvas, x=10, y=10):
     instructions = [
         "ESC to stop",
-        "Click to select monitor",
-        "Drag to move selected monitor",
+        "Mouse to drag",
         "H to toggle horizontal align",
         "V to toggle vertical align",
         "R to rotate clockwise",
         "Shift+R to rotate counter-clockwise",
         "S to change scale",
         "+/- to adjust scale",
-        "Selected: None",
     ]
     for i, line in enumerate(instructions):
-        canvas.create_text(x, y + i * 20, text=line, fill="black", anchor="nw", font=("Arial", 10, "bold"), tags=f"instruction_{i}")
+        canvas.create_text(x, y + i * 20, text=line, fill="black", anchor="nw", font=("Arial", 10, "bold"))
 
 
 def draw_monitors(monitors):
@@ -308,26 +306,124 @@ def draw_monitors(monitors):
     root = tk.Tk()
     root.title("Monitor Layout - Scale and Rotation Support")
 
-    def quit_program(event: "Event[tk.Misc]") -> None:
+    def quit_program(event=None):
+        print("Quitting program")
         root.destroy()
+
+    def rotate_selected_clockwise(event):
+
+        item = canvas.find_withtag("selected")
+        print(f"item = {item}")
+        if item:
+            for mon in monitors:
+                if mon.canvas_id == item[0]:
+                    mon.rotate_clockwise()
+                    update_monitor_display(mon)
+                    break
+
+    def rotate_selected_anticlockwise(event=None):
+        item = canvas.find_withtag("selected")
+        print(f"item = {item}")
+        if item:
+            for mon in monitors:
+                if mon.canvas_id == item[0]:
+                    mon.rotate_anticlockwise()
+                    update_monitor_display(mon)
+                    break
+
+    def change_scale(event=None):
+        item = canvas.find_withtag("selected")
+        print(f"item = {item}")
+        if item:
+            for mon in monitors:
+                if mon.canvas_id == item[0]:
+                    new_scale = simpledialog.askfloat(
+                        "Scale Factor",
+                        f"Enter scale factor for {mon.name} (current: {mon.scale}):",
+                        initialvalue=mon.scale,
+                        minvalue=0.5,
+                        maxvalue=3.0,
+                    )
+                    if new_scale:
+                        mon.set_scale(new_scale)
+                        update_monitor_display(mon)
+                    break
+
+    def increase_scale(event=None):
+        item = canvas.find_withtag("selected")
+        print(f"item = {item}")
+        if item:
+            for mon in monitors:
+                if mon.canvas_id == item[0]:
+                    mon.scale = min(3.0, mon.scale + 0.1)
+                    update_monitor_display(mon)
+                    break
+
+    def decrease_scale(event=None):
+        item = canvas.find_withtag("selected")
+        print(f"item = {item}")
+        if item:
+            for mon in monitors:
+                if mon.canvas_id == item[0]:
+                    mon.scale = max(0.5, mon.scale - 0.1)
+                    update_monitor_display(mon)
+                    break
+
+    def update_monitor_display(monitor):
+        """Update the visual representation of a monitor after rotation or scale change."""
+        # Remove old items
+        canvas.delete(monitor.canvas_id)
+        canvas.delete(monitor.text_id)
+
+        # Get current position and calculate new display
+        x1, y1, x2, y2 = get_monitor_canvas_coords(monitor)
+
+        # Create new rectangle
+        monitor.canvas_id = canvas.create_rectangle(x1, y1, x2, y2, fill=monitor.color, outline="white", width=2, tags="monitor")
+
+        # Create new text
+        monitor.text_id = canvas.create_text(
+            (x1 + x2) / 2,
+            (y1 + y2) / 2,
+            text=f"{monitor.name}\n{monitor.get_rotation()}°\n{monitor.scale:.1f}x",
+            fill="black",
+            font=("Arial", 10, "bold"),
+            tags="monitor_text",
+        )
+
+        update_bounding_box()
+
+    def get_monitor_canvas_coords(monitor):
+        """Calculate canvas coordinates for a monitor."""
+        x, y = monitor.position
+        w, h = monitor.resolution
+
+        # Adjust position with margin and centering offsets
+        adj_x = x + max_width + monitor_offset_x
+        adj_y = y + max_height + monitor_offset_y
+
+        # Scale and offset to fit and center in canvas
+        scaled_x = scale * adj_x + canvas_pos_x
+        scaled_y = scale * adj_y + canvas_pos_y
+        scaled_w = scale * w
+        scaled_h = scale * h
+
+        return scaled_x, scaled_y, scaled_x + scaled_w, scaled_y + scaled_h
 
     root.bind("<Escape>", quit_program)
     root.bind("h", toggle_horizontal)
     root.bind("v", toggle_vertical)
+    root.bind("r", rotate_selected_clockwise)
+    root.bind("R", rotate_selected_anticlockwise)  # Shift+R
+    root.bind("s", change_scale)
+    root.bind("<plus>", increase_scale)
+    root.bind("<minus>", decrease_scale)
 
-    canvas = tk.Canvas(root, bg="white")
-    canvas.pack(fill="both", expand=True)
+    drag_data = {"x": 0, "y": 0, "item": None, "monitor": None}
 
     def on_ready():
-        # Local variables for this function
-        selected_monitor = None
-        scale = 1.0
-        canvas_pos_x = 0
-        canvas_pos_y = 0
-        monitor_offset_x = 0
-        monitor_offset_y = 0
-        all_mon_rects = {}
-        bounding_rect_id = None
+        print("Calling on ready")
+        nonlocal scale, canvas_pos_x, canvas_pos_y, monitor_offset_x, monitor_offset_y
 
         window_width = root.winfo_width()
         window_height = root.winfo_height()
@@ -359,134 +455,12 @@ def draw_monitors(monitors):
         monitor_total_height = max_y - min_y
         monitor_offset_y = (virtual_height - monitor_total_height) / 2 - max_height
 
-        def update_instructions():
-            """Update the instructions to show which monitor is selected."""
-            if selected_monitor:
-                canvas.itemconfig("instruction_9", text=f"Selected: {selected_monitor.name}")
-            else:
-                canvas.itemconfig("instruction_9", text="Selected: None")
-
-        def select_monitor(monitor):
-            nonlocal selected_monitor
-            # Deselect previous
-            if selected_monitor:
-                canvas.itemconfig(selected_monitor.canvas_id, outline="white", width=2)
-                canvas.dtag(selected_monitor.canvas_id, "selected")
-
-            # Select new
-            selected_monitor = monitor
-            if selected_monitor:
-                canvas.itemconfig(selected_monitor.canvas_id, outline="yellow", width=3)
-                canvas.addtag_withtag("selected", selected_monitor.canvas_id)
-
-            update_instructions()
-            print(f"Selected: {selected_monitor.name if selected_monitor else 'None'}")
-
-        def rotate_selected_clockwise(event=None):
-            if selected_monitor:
-                selected_monitor.rotate_clockwise()
-                update_monitor_display(selected_monitor)
-                print(f"Rotated {selected_monitor.name} clockwise to {selected_monitor.get_rotation()}°")
-
-        def rotate_selected_anticlockwise(event=None):
-            if selected_monitor:
-                selected_monitor.rotate_anticlockwise()
-                update_monitor_display(selected_monitor)
-                print(f"Rotated {selected_monitor.name} counter-clockwise to {selected_monitor.get_rotation()}°")
-
-        def change_scale(event):
-            print(f"Key pressed on canvas at: ({event.x}, {event.y})")
-            if selected_monitor:
-                new_scale = simpledialog.askfloat(
-                    "Scale Factor",
-                    f"Enter scale factor for {selected_monitor.name} (current: {selected_monitor.scale}):",
-                    initialvalue=selected_monitor.scale,
-                    minvalue=0.5,
-                    maxvalue=3.0,
-                )
-                if new_scale:
-                    selected_monitor.set_scale(new_scale)
-                    update_monitor_display(selected_monitor)
-                    print(f"Set scale for {selected_monitor.name} to {new_scale}")
-
-        def increase_scale(event):
-            print(f"Key pressed on canvas at: ({event.x}, {event.y})")
-            if selected_monitor:
-                selected_monitor.scale = min(3.0, selected_monitor.scale + 0.1)
-                update_monitor_display(selected_monitor)
-                print(f"Increased scale for {selected_monitor.name} to {selected_monitor.scale}")
-
-        def decrease_scale(event=None):
-            print(f"Key pressed on canvas at: ({event.x}, {event.y})")
-            if selected_monitor:
-                selected_monitor.scale = max(0.5, selected_monitor.scale - 0.1)
-                update_monitor_display(selected_monitor)
-                print(f"Decreased scale for {selected_monitor.name} to {selected_monitor.scale}")
-
-        def get_monitor_canvas_coords(monitor):
-            """Calculate canvas coordinates for a monitor."""
-            x, y = monitor.position
-            w, h = monitor.resolution
-
-            # Adjust position with margin and centering offsets
-            adj_x = x + max_width + monitor_offset_x
-            adj_y = y + max_height + monitor_offset_y
-
-            # Scale and offset to fit and center in canvas
-            scaled_x = scale * adj_x + canvas_pos_x
-            scaled_y = scale * adj_y + canvas_pos_y
-            scaled_w = scale * w
-            scaled_h = scale * h
-
-            return scaled_x, scaled_y, scaled_x + scaled_w, scaled_y + scaled_h
-
-        def update_monitor_display(monitor):
-            """Update the visual representation of a monitor after rotation or scale change."""
-            # Remove old items
-            canvas.delete(monitor.canvas_id)
-            canvas.delete(monitor.text_id)
-
-            # Get current position and calculate new display
-            x1, y1, x2, y2 = get_monitor_canvas_coords(monitor)
-
-            # Create new rectangle
-            monitor.canvas_id = canvas.create_rectangle(
-                x1,
-                y1,
-                x2,
-                y2,
-                fill=monitor.color,
-                outline="yellow" if monitor == selected_monitor else "white",
-                width=3 if monitor == selected_monitor else 2,
-                tags="monitor",
-            )
-
-            # Create new text
-            monitor.text_id = canvas.create_text(
-                (x1 + x2) / 2,
-                (y1 + y2) / 2,
-                text=f"{monitor.name}\n{monitor.get_rotation()}°\n{monitor.scale:.1f}x",
-                fill="black",
-                font=("Arial", 10, "bold"),
-                tags="monitor_text",
-            )
-
-            all_mon_rects[monitor] = monitor.canvas_id
-
-            # Re-apply selection if this is the selected monitor
-            if monitor == selected_monitor:
-                canvas.itemconfig(monitor.canvas_id, outline="yellow", width=3)
-                canvas.addtag_withtag("selected", monitor.canvas_id)
-
-            update_bounding_box()
-
         # Draw all monitors
         for mon in monitors:
             x1, y1, x2, y2 = get_monitor_canvas_coords(mon)
 
             rect = canvas.create_rectangle(x1, y1, x2, y2, fill=mon.color, outline="white", width=2, tags="monitor")
             all_mon_rects[mon] = rect
-            mon.canvas_id = rect
 
             text = canvas.create_text(
                 (x1 + x2) / 2,
@@ -496,105 +470,139 @@ def draw_monitors(monitors):
                 font=("Arial", 10, "bold"),
                 tags="monitor_text",
             )
+            mon.canvas_id = rect
             mon.text_id = text
 
-        # Bind keyboard shortcuts inside on_ready so they have access to local variables
-        def bind_rotate_clockwise(event=None):
-            print(f"Key pressed on canvas at: ({event.x}, {event.y})")
-            rotate_selected_clockwise()
+        update_bounding_box()
+        canvas.bind("<ButtonPress-1>", on_start_drag)
+        canvas.bind("<B1-Motion>", on_drag)
+        canvas.bind("<ButtonRelease-1>", on_end_drag)
 
-        def bind_rotate_anticlockwise(event=None):
-            print(f"Key pressed on canvas at: ({event.x}, {event.y})")
-            rotate_selected_anticlockwise()
+    canvas = tk.Canvas(root, bg="white")
+    canvas.pack(fill="both", expand=True)
 
-        root.bind("r", bind_rotate_clockwise)
-        root.bind("<Shift-R>", bind_rotate_anticlockwise)
-        root.bind("s", change_scale)
-        root.bind("<plus>", increase_scale)
-        root.bind("<equal>", increase_scale)  # + key without shift
-        root.bind("<minus>", decrease_scale)
+    # Initialize these as nonlocal variables
+    scale = 1.0
+    canvas_pos_x = 0
+    canvas_pos_y = 0
+    monitor_offset_x = 0
+    monitor_offset_y = 0
+    all_mon_rects = {}
+    bounding_rect_id = None
 
-        def update_bounding_box():
-            nonlocal bounding_rect_id
-            scaled_xs = []
-            scaled_ys = []
-            for mon in monitors:
-                coords = canvas.coords(mon.canvas_id)
-                if len(coords) == 4:  # Ensure we have valid coordinates
-                    x1, y1, x2, y2 = coords
-                    scaled_xs.extend([x1, x2])
-                    scaled_ys.extend([y1, y2])
+    def update_bounding_box():
+        nonlocal bounding_rect_id
+        scaled_xs = []
+        scaled_ys = []
+        for mon in monitors:
+            coords = canvas.coords(mon.canvas_id)
+            x1, y1, x2, y2 = coords
+            scaled_xs.extend([x1, x2])
+            scaled_ys.extend([y1, y2])
 
-            if not scaled_xs:
-                return
+        if not scaled_xs:
+            return
 
-            left_corner = np.array([min(scaled_xs), min(scaled_ys)])
-            right_bottom_corner = np.array([max(scaled_xs), max(scaled_ys)])
+        left_corner = np.array([min(scaled_xs), min(scaled_ys)])
+        right_bottom_corner = np.array([max(scaled_xs), max(scaled_ys)])
 
-            if bounding_rect_id:
-                canvas.coords(bounding_rect_id, left_corner[0], left_corner[1], right_bottom_corner[0], right_bottom_corner[1])
-            else:
-                bounding_rect_id = canvas.create_rectangle(
-                    left_corner[0],
-                    left_corner[1],
-                    right_bottom_corner[0],
-                    right_bottom_corner[1],
-                    outline="blue",
-                    fill="",
-                    width=2,
-                    tags="bounding_box",
-                )
+        if bounding_rect_id:
+            canvas.coords(bounding_rect_id, left_corner[0], left_corner[1], right_bottom_corner[0], right_bottom_corner[1])
+        else:
+            bounding_rect_id = canvas.create_rectangle(
+                left_corner[0], left_corner[1], right_bottom_corner[0], right_bottom_corner[1], outline="blue", fill="", width=2
+            )
 
-        drag_data = {"x": 0, "y": 0, "item": None, "monitor": None}
+    def on_start_drag(event):
+        widget = event.widget
+        item = widget.find_closest(event.x, event.y)[0]
+        print(f"item = {item}")
 
-        def on_click(event):
-            """Handle mouse clicks for selection."""
-            print(f"Key pressed on canvas at: ({event.x}, {event.y})")
-            item = canvas.find_closest(event.x, event.y)[0]
-            print(f"Clicked on item: {item}")
+        # Clear previous selection
+        canvas.itemconfig("selected", outline="white")
+        canvas.dtag("all", "selected")
 
-            # Check if this is a monitor rectangle
-            for mon in monitors:
-                if mon.canvas_id == item:
-                    select_monitor(mon)
-                    drag_data["item"] = item
-                    drag_data["monitor"] = mon
-                    drag_data["x"] = event.x
-                    drag_data["y"] = event.y
-                    print(f"Selected and ready to drag: {mon.name}")
-                    return
-
-            # If clicked on background, deselect
-            select_monitor(None)
-            drag_data["item"] = None
-            drag_data["monitor"] = None
-
-        def on_drag(event):
-            print(f"Called on_drag")
-            if drag_data["item"] is not None and drag_data["monitor"] is not None:
-                dx = event.x - drag_data["x"]
-                dy = event.y - drag_data["y"]
+        for mon in monitors:
+            if mon.canvas_id == item:
+                drag_data["item"] = item
+                drag_data["monitor"] = mon
                 drag_data["x"] = event.x
                 drag_data["y"] = event.y
+                # Mark as selected
+                canvas.itemconfig(item, outline="yellow", width=3)
+                canvas.addtag("selected", "withtag", item)
+                break
 
-                canvas.move(drag_data["monitor"].canvas_id, dx, dy)
-                canvas.move(drag_data["monitor"].text_id, dx, dy)
-                print(f"Dragging {drag_data['monitor'].name} by ({dx}, {dy})")
+    def on_drag(event):
+        if drag_data["item"] is not None:
+            dx = event.x - drag_data["x"]
+            dy = event.y - drag_data["y"]
+            drag_data["x"] = event.x
+            drag_data["y"] = event.y
 
-        def on_end_drag(event):
-            if drag_data["monitor"] is not None:
-                mon = drag_data["monitor"]
+            canvas.move(drag_data["monitor"].canvas_id, dx, dy)
+            canvas.move(drag_data["monitor"].text_id, dx, dy)
 
-                # 1. Get dragged monitor's 9 key points
-                dragged_keypoints = get_key_points(canvas.coords(mon.canvas_id))  # shape (9, 2)
+    def get_key_points(rect_coords: List[float]) -> np.ndarray:
+        x1, y1, x2, y2 = rect_coords
+        cx = (x1 + x2) / 2
+        cy = (y1 + y2) / 2
+        return np.array(
+            [
+                [x1, y1],  # top-left
+                [x2, y1],  # top-right
+                [x2, y2],  # bottom-right
+                [x1, y2],  # bottom-left
+                [cx, y1],  # top edge midpoint
+                [x2, cy],  # right edge midpoint
+                [cx, y2],  # bottom edge midpoint
+                [x1, cy],  # left edge midpoint
+                [cx, cy],  # center
+            ]
+        )
 
-                # 2. Get (N, 9, 2) keypoints of all *other* monitors
-                others_tensor = get_other_monitors_keypoints_tensor(canvas, all_mon_rects, mon)
+    def get_other_monitors_keypoints_tensor(canvas, all_mon_rects, exclude_monitor) -> np.ndarray:
+        other_points = []
+        for mon, rect_id in all_mon_rects.items():
+            if mon == exclude_monitor:
+                continue
+            coords = canvas.coords(rect_id)
+            other_points.append(get_key_points(coords))
+        return np.array(other_points) if other_points else np.array([]).reshape(0, 9, 2)
 
-                # 3. Find best alignment and delta
+    def find_closest_alignment(dragged_keypoints: np.ndarray, others_tensor: np.ndarray) -> tuple:
+        if others_tensor.size == 0:
+            return np.array([0.0, 0.0]), (-1, -1, -1, float("inf"))
+
+        min_dist = float("inf")
+        best_delta = np.array([0.0, 0.0])
+        best_info = (-1, -1, -1, min_dist)
+
+        for i, drag_pt in enumerate(dragged_keypoints):
+            for j, mon_keypoints in enumerate(others_tensor):
+                for k, other_pt in enumerate(mon_keypoints):
+                    dist = np.linalg.norm(drag_pt - other_pt)
+                    if dist < min_dist:
+                        min_dist = dist
+                        best_delta = other_pt - drag_pt
+                        best_info = (i, j, k, dist)
+
+        return best_delta, best_info
+
+    def on_end_drag(event):
+        if drag_data["monitor"] is not None:
+            mon = drag_data["monitor"]
+
+            # 1. Get dragged monitor's 9 key points
+            dragged_keypoints = get_key_points(canvas.coords(mon.canvas_id))
+
+            # 2. Get (N, 9, 2) keypoints of all *other* monitors
+            others_tensor = get_other_monitors_keypoints_tensor(canvas, all_mon_rects, mon)
+
+            # 3. Find best alignment and delta
+            if others_tensor.size > 0:
                 delta, (drag_idx, mon_idx, point_idx, dist) = find_closest_alignment(dragged_keypoints, others_tensor)
                 print(f"Snapping dragged point {drag_idx} to monitor {mon_idx}'s point {point_idx} (dist = {dist:.2f})")
-                print(f"Delta = {delta}")
 
                 # 4. Move the dragged canvas rectangle and its text label
                 align_mask = np.array([align_horizontal, align_vertical])
@@ -602,110 +610,22 @@ def draw_monitors(monitors):
                 canvas.move(mon.canvas_id, delta[0], delta[1])
                 canvas.move(mon.text_id, delta[0], delta[1])
 
-                # 5. Update monitor position logically (from new canvas position)
-                x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
-                new_adj_x = (x1 - canvas_pos_x) / scale
-                new_adj_y = (y1 - canvas_pos_y) / scale
-                new_x = new_adj_x - max_width - monitor_offset_x
-                new_y = new_adj_y - max_height - monitor_offset_y
+            # 5. Update monitor position logically (from new canvas position)
+            x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
+            new_adj_x = (x1 - canvas_pos_x) / scale
+            new_adj_y = (y1 - canvas_pos_y) / scale
+            new_x = new_adj_x - max_width - monitor_offset_x
+            new_y = new_adj_y - max_height - monitor_offset_y
 
-                mon.position = np.array([round(new_x), round(new_y)])
-                print(f"Updated position of {mon.name}: {mon.position}")
+            mon.position = np.array([round(new_x), round(new_y)])
+            print(f"Updated position of {mon.name}: {mon.position}")
 
-        def get_key_points(rect_coords: List[float]) -> np.ndarray:
-            x1, y1, x2, y2 = rect_coords
-            cx = (x1 + x2) / 2
-            cy = (y1 + y2) / 2
-            return np.array(
-                [
-                    [x1, y1],  # top-left
-                    [x2, y1],  # top-right
-                    [x2, y2],  # bottom-right
-                    [x1, y2],  # bottom-left
-                    [cx, y1],  # top edge midpoint
-                    [x2, cy],  # right edge midpoint
-                    [cx, y2],  # bottom edge midpoint
-                    [x1, cy],  # left edge midpoint
-                    [cx, cy],  # center
-                ]
-            )
-
-        def get_other_monitors_keypoints_tensor(exclude_monitor) -> np.ndarray:
-            other_points = []
-            for mon in monitors:
-                if mon == exclude_monitor:
-                    continue
-                coords = canvas.coords(mon.canvas_id)
-                if len(coords) == 4:
-                    other_points.append(get_key_points(coords))
-            return np.array(other_points) if other_points else np.array([]).reshape(0, 9, 2)
-
-        def find_closest_alignment(dragged_keypoints: np.ndarray, others_tensor: np.ndarray) -> tuple:
-            if others_tensor.size == 0:
-                return np.array([0.0, 0.0]), (-1, -1, -1, float("inf"))
-
-            min_dist = float("inf")
-            best_delta = np.array([0.0, 0.0])
-            best_info = (-1, -1, -1, min_dist)
-
-            for i, drag_pt in enumerate(dragged_keypoints):
-                for j, mon_keypoints in enumerate(others_tensor):
-                    for k, other_pt in enumerate(mon_keypoints):
-                        dist = np.linalg.norm(drag_pt - other_pt)
-                        if dist < min_dist:
-                            min_dist = dist
-                            best_delta = other_pt - drag_pt
-                            best_info = (i, j, k, dist)
-
-            return best_delta, best_info
-
-        def on_release(event):
-            print(f"called on_release")
-            if drag_data["monitor"] is not None:
-                mon = drag_data["monitor"]
-
-                # 1. Get dragged monitor's 9 key points
-                dragged_keypoints = get_key_points(canvas.coords(mon.canvas_id))
-
-                # 2. Get (N, 9, 2) keypoints of all *other* monitors
-                others_tensor = get_other_monitors_keypoints_tensor(mon)
-
-                # 3. Find best alignment and delta
-                if others_tensor.size > 0:
-                    delta, (drag_idx, mon_idx, point_idx, dist) = find_closest_alignment(dragged_keypoints, others_tensor)
-                    print(f"Snapping dragged point {drag_idx} to monitor {mon_idx}'s point {point_idx} (dist = {dist:.2f})")
-
-                    # 4. Move the dragged canvas rectangle and its text label
-                    align_mask = np.array([align_horizontal, align_vertical])
-                    delta *= align_mask
-                    canvas.move(mon.canvas_id, delta[0], delta[1])
-                    canvas.move(mon.text_id, delta[0], delta[1])
-
-                # 5. Update monitor position logically (from new canvas position)
-                x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
-                new_adj_x = (x1 - canvas_pos_x) / scale
-                new_adj_y = (y1 - canvas_pos_y) / scale
-                new_x = new_adj_x - max_width - monitor_offset_x
-                new_y = new_adj_y - max_height - monitor_offset_y
-
-                mon.position = np.array([round(new_x), round(new_y)])
-                print(f"Updated position of {mon.name}: {mon.position}")
-
-            drag_data["item"] = None
-            update_bounding_box()
-
-        # Bind mouse events
-        print(f"canvas.bind the mouse")
-        canvas.bind("<ButtonPress-1>", on_click)
-        canvas.bind("<B1-Motion>", on_drag)
-        canvas.bind("<ButtonRelease-1>", on_release)
-
+        drag_data["item"] = None
+        drag_data["monitor"] = None
         update_bounding_box()
-        update_instructions()
-        return
 
+    root.after(WAYLAND_WINDOW_CREATION_TIME, on_ready)
     draw_instructions(canvas)
-    root.after(500, on_ready)
     root.mainloop()
 
 
