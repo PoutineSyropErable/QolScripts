@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Literal
 from numpy.typing import NDArray
 import tkinter as tk
 from tkinter import messagebox
@@ -90,7 +90,9 @@ def get_best_monitor_modes():
 
 
 class Monitor:
-    def __init__(self, name: str, position: Tuple[int, int], resolution: Tuple[int, int], refresh_rate: float):
+    def __init__(
+        self, name: str, position: Tuple[int, int], resolution: Tuple[int, int], refresh_rate: float, transform: int = 0, scale: float = 1
+    ):
         """
         :param name: str, monitor identifier
         :param position: tuple (x, y) in pixels
@@ -98,21 +100,70 @@ class Monitor:
         """
         self.name = name
         self.position: NDArray[np.float64] = np.array(list(position))  # (x, y)
-        self.resolution = resolution  # (width, height)
         self.color = self._random_light_color()
-        self.canvas_id = None  # stores the canvas rectangle ID
+        self.canvas_id = None
         self.refresh_rate = refresh_rate
-        self.text_id = None  # stores the canvas text ID
-        self.transform = 0
+        self.text_id = None
+        self.scale = scale
+
+        self.first_transform = transform
+        self.transform = transform  # rotation
+        self._base_resolution = resolution  # store the "natural" resolution
+        self.resolution = self._apply_transform_resolution()
+        assert transform in [0, 1, 2, 3]
+
+    def _apply_transform_resolution(self) -> Tuple[int, int]:
+        """Return resolution depending on rotation: swap width/height if rotated 90° or 270°."""
+        w, h = self._base_resolution
+        if self.transform % 2 == 1:  # 90° or 270°
+            return (h, w)
+        return (w, h)
+
+    def get_rotation(self) -> int:
+        """Return rotation in degrees corresponding to transform."""
+        rotation_dict = {0: 0, 1: 90, 2: 180, 3: 270}
+        return rotation_dict[self.transform]
+
+    def set_rotation(self, rotation_degree: Literal[0, 90, 180, 270]):
+        assert rotation_degree in [0, 90, 180, 270]
+        self.transform = rotation_degree // 90
+        self.resolution = self._apply_transform_resolution()  # update resolution
+
+    def rotate_clockwise(self):
+        self.transform = (self.transform + 1) % 4
+        self.resolution = self._apply_transform_resolution()
+
+    def rotate_anticlockwise(self):
+        self.transform = (self.transform - 1) % 4
+        self.resolution = self._apply_transform_resolution()
+
+        # --- Corner and center offsets ---
+
+    def top_left_offset(self) -> NDArray[np.float64]:
+        """Vector from position to top-left corner (always 0,0)."""
+        return np.array([0.0, 0.0])
+
+    def top_right_offset(self) -> NDArray[np.float64]:
+        """Vector from position to top-right corner."""
+        w, h = self.resolution
+        return np.array([w, 0.0])
+
+    def bottom_left_offset(self) -> NDArray[np.float64]:
+        """Vector from position to bottom-left corner."""
+        w, h = self.resolution
+        return np.array([0.0, h])
+
+    def bottom_right_offset(self) -> NDArray[np.float64]:
+        """Vector from position to bottom-right corner."""
+        w, h = self.resolution
+        return np.array([w, h])
+
+    def center_offset(self) -> NDArray[np.float64]:
+        """Vector from position to center of the monitor."""
+        w, h = self.resolution
+        return np.array([w / 2, h / 2])
 
     def _random_light_color(self):
-        """
-        Generate a random light color using HLS:
-        - Hue: random 0-1
-        - Lightness: high (0.75 - 0.9)
-        - Saturation: medium (0.4 - 0.7)
-        Returns hex string color like "#aabbcc"
-        """
         h = random.random()
         l = random.uniform(0.75, 0.9)
         s = random.uniform(0.4, 0.7)
@@ -122,7 +173,7 @@ class Monitor:
     def __repr__(self):
         return (
             f"Monitor(name={self.name}, position={self.position}, resolution={self.resolution}, "
-            f"refresh_rate={self.refresh_rate}, color={self.color})"
+            f"refresh_rate={self.refresh_rate}, color={self.color}, transform={self.get_rotation()}°)"
         )
 
 
