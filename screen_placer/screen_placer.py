@@ -16,6 +16,9 @@ import numpy as np
 
 MAIN_MONITOR = "DP-1"
 
+ACCEPTABLE_SCALE = [0.5, 0.75, 1, 1.25, 1.6]
+SCALE_STEP = 0.25
+
 
 def notify_send(summary: str, body: str = "", urgency: str = "normal", timeout: int = 5000):
     """
@@ -310,9 +313,9 @@ def draw_monitors(monitors):
     root = tk.Tk()
     root.title("Monitor Layout")
 
-    default_width = 1200
-    default_height = 800
-    root.geometry(f"{default_width}x{default_height}")
+    # default_width = 1200
+    # default_height = 800
+    # root.geometry(f"{default_width}x{default_height}")
 
     def quit_program(event=None):
         root.destroy()
@@ -430,7 +433,7 @@ def draw_monitors(monitors):
             scaled_ys.append(scaled_y + scaled_h)
 
             # Update text to include scale and rotation info
-            text_content = f"{mon.name}\n{mon.get_rotation()}°\n{mon.scale:.1f}x"
+            text_content = f"{mon.name}\n{mon.get_rotation()}°\n{mon.scale:.2f}x"
             text = canvas.create_text(
                 scaled_x + scaled_w / 2,
                 scaled_y + scaled_h / 2,
@@ -459,7 +462,7 @@ def draw_monitors(monitors):
             x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
 
             # Update text with new rotation and scale info
-            text_content = f"{mon.name}\n{mon.get_rotation()}°\n{mon.scale:.1f}x"
+            text_content = f"{mon.name}\n{mon.get_rotation()}°\n{mon.scale:.2f}x"
             mon.text_id = canvas.create_text(
                 (x1 + x2) / 2,
                 (y1 + y2) / 2,
@@ -539,7 +542,7 @@ def draw_monitors(monitors):
             """Increase scale of the monitor under mouse cursor"""
             mon = get_selected_monitor(event)
             if mon:
-                new_scale = min(mon.scale + 0.1, 3.0)  # Cap at 3.0x
+                new_scale = min(mon.scale + SCALE_STEP, 3.0)  # Cap at 3.0x
                 mon.set_scale(new_scale)
                 # Update the rectangle dimensions based on new effective resolution
                 x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
@@ -561,7 +564,7 @@ def draw_monitors(monitors):
             """Decrease scale of the monitor under mouse cursor"""
             mon = get_selected_monitor(event)
             if mon:
-                new_scale = max(mon.scale - 0.1, 0.5)  # Minimum 0.5x
+                new_scale = max(mon.scale - SCALE_STEP, 0.5)  # Minimum 0.5x
                 mon.set_scale(new_scale)
                 # Update the rectangle dimensions based on new effective resolution
                 x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
@@ -762,14 +765,15 @@ def generate_hypr_monitor_config(monitors: List[Monitor]) -> str:
     lines = []
     for mon in monitors:
         name = mon.name
-        width, height = mon.resolution  # Use scaled resolution
+        width, height = mon._base_resolution  # Don't Use scaled resolution
         x, y = map(int, mon.position)
         refresh = int(round(mon.refresh_rate))
         transform = mon.transform
         scale = mon.scale
 
+        formatted_scale = "%g" % scale
         # Format as required by Hyprland with transform and scale
-        lines.append(f"monitor={name},{width}x{height}@{refresh},{x}x{y},{scale:.2f},transform,{transform}")
+        lines.append(f"monitor={name},{width}x{height}@{refresh},{x}x{y},{formatted_scale},transform,{transform}")
     return "\n".join(lines)
 
 
@@ -794,13 +798,19 @@ if __name__ == "__main__":
     assert MAIN_MONITOR in positions, "The main monitor should be in the positions"
     dp1_pos = positions[MAIN_MONITOR].copy()
     positions_tuple: Dict[str, Tuple[int, int]] = {}
+    resolution_tuple: Dict[str, Tuple[int, int]] = {}
+    scale_dict: Dict[str, float] = {}
     for m in monitors:
         # m.position = m.position - col_min
         m.position -= dp1_pos
         positions_tuple[m.name] = tuple(m.position.tolist())
+        resolution_tuple[m.name] = m._base_resolution
+        scale_dict[m.name] = m.scale
 
     print("======")
     print(f"positions = \n{positions_tuple}\n")
+    print(f"resolution = \n{resolution_tuple}\n")
+    print(f"scale_dict = {scale_dict}")
     meta_code = generate_hypr_monitor_config(monitors)
     print("\n")
     print(meta_code)
