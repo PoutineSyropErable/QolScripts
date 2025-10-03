@@ -235,7 +235,7 @@ def get_current_monitor_states() -> List[Dict[str, Any]]:
                 "name": cast(str, mon.get("name", "Unknown")),
                 "position": cast(Tuple[int, int], (mon.get("x", 0), mon.get("y", 0))),
                 "resolution": cast(Tuple[int, int], (mon.get("width", 1920), mon.get("height", 1080))),
-                "refresh_rate": float(mon.get("refresh_rate", 60)),
+                "refresh_rate": float(mon.get("refreshRate", 60)),
                 "transform": int(mon.get("transform", 0)),
                 "scale": float(mon.get("scale", 1.0)),
             }
@@ -286,7 +286,6 @@ def create_monitors_from_state(state_list: List[Dict[str, Any]]) -> List["Monito
             scale=scale,
         )
 
-        mon.create_rectangle(canvas, scale)  # Draw in GUI
         monitors.append(mon)
 
     return monitors
