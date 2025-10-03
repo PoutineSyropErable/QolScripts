@@ -847,6 +847,7 @@ def generate_hypr_monitor_config(monitors: List[Monitor]) -> str:
 
 if __name__ == "__main__":
     print("\n\n====Start of program=====\n\n")
+
     monitors: List[Monitor] = initialize_monitors()
     draw_monitors(monitors)
     positions: dict[str, np.ndarray] = {}
