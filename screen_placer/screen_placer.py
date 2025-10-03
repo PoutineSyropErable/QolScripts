@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Literal
 from numpy.typing import NDArray
 import tkinter as tk
 from tkinter import messagebox
@@ -87,7 +87,7 @@ def get_best_monitor_modes():
     return best_modes
 
 
-class Monitor:
+class MonitorOld:
     def __init__(self, name: str, position: Tuple[int, int], resolution: Tuple[int, int], refresh_rate: float):
         """
         :param name: str, monitor identifier
@@ -120,6 +120,109 @@ class Monitor:
         return (
             f"Monitor(name={self.name}, position={self.position}, resolution={self.resolution}, "
             f"refresh_rate={self.refresh_rate}, color={self.color})"
+        )
+
+
+class Monitor:
+    def __init__(
+        self, name: str, position: Tuple[int, int], resolution: Tuple[int, int], refresh_rate: float, transform: int = 0, scale: float = 1.0
+    ):
+        """
+        :param name: str, monitor identifier
+        :param position: tuple (x, y) in pixels
+        :param resolution: tuple (width, height) in pixels
+        :param transform: 0=normal, 1=90°, 2=180°, 3=270°
+        :param scale: scaling factor (e.g., 1.0 = 100%, 1.5 = 150%)
+        """
+        self.name = name
+        self.position: NDArray[np.float64] = np.array(list(position))  # (x, y)
+        self.color = self._random_light_color()
+        self.canvas_id = None
+        self.refresh_rate = refresh_rate
+        self.text_id = None
+        self.scale = scale
+
+        self.first_transform = transform
+        self.transform = transform  # rotation
+        self._base_resolution = resolution  # store the "natural" resolution
+        self.resolution = self._apply_transform_resolution()
+        assert transform in [0, 1, 2, 3]
+
+    def _apply_transform_resolution(self) -> Tuple[int, int]:
+        """Return resolution depending on rotation: swap width/height if rotated 90° or 270°."""
+        w, h = self._base_resolution
+        if self.transform % 2 == 1:  # 90° or 270°
+            return (h, w)
+        return (w, h)
+
+    def get_effective_resolution(self) -> Tuple[int, int]:
+        """Get the effective resolution after applying scale."""
+        w, h = self.resolution
+        return (int(w / self.scale), int(h / self.scale))
+
+    def get_rotation(self) -> int:
+        """Return rotation in degrees corresponding to transform."""
+        rotation_dict = {0: 0, 1: 90, 2: 180, 3: 270}
+        return rotation_dict[self.transform]
+
+    def set_rotation(self, rotation_degree: Literal[0, 90, 180, 270]):
+        assert rotation_degree in [0, 90, 180, 270]
+        self.transform = rotation_degree // 90
+        self.resolution = self._apply_transform_resolution()  # update resolution
+
+    def rotate_clockwise(self):
+        self.transform = (self.transform + 1) % 4
+        self.resolution = self._apply_transform_resolution()
+
+    def rotate_anticlockwise(self):
+        self.transform = (self.transform - 1) % 4
+        self.resolution = self._apply_transform_resolution()
+
+    def set_scale(self, scale: float):
+        """Set scale factor (e.g., 1.0 = 100%, 1.5 = 150%)."""
+        assert scale > 0, "Scale must be positive"
+        self.scale = scale
+
+    def get_scale(self) -> float:
+        return self.scale
+
+    # --- Corner and center offsets ---
+
+    def top_left_offset(self) -> NDArray[np.float64]:
+        """Vector from position to top-left corner (always 0,0)."""
+        return np.array([0.0, 0.0])
+
+    def top_right_offset(self) -> NDArray[np.float64]:
+        """Vector from position to top-right corner."""
+        w, h = self.resolution
+        return np.array([w, 0.0])
+
+    def bottom_left_offset(self) -> NDArray[np.float64]:
+        """Vector from position to bottom-left corner."""
+        w, h = self.resolution
+        return np.array([0.0, h])
+
+    def bottom_right_offset(self) -> NDArray[np.float64]:
+        """Vector from position to bottom-right corner."""
+        w, h = self.resolution
+        return np.array([w, h])
+
+    def center_offset(self) -> NDArray[np.float64]:
+        """Vector from position to center of the monitor."""
+        w, h = self.resolution
+        return np.array([w / 2, h / 2])
+
+    def _random_light_color(self):
+        h = random.random()
+        l = random.uniform(0.75, 0.9)
+        s = random.uniform(0.4, 0.7)
+        r, g, b = hls_to_rgb(h, l, s)
+        return f"#{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}"
+
+    def __repr__(self):
+        return (
+            f"Monitor(name={self.name}, position={self.position}, resolution={self.resolution}, "
+            f"refresh_rate={self.refresh_rate}, scale={self.scale}, transform={self.get_rotation()}°)"
         )
 
 
@@ -565,4 +668,3 @@ if __name__ == "__main__":
     meta_code = generate_hypr_monitor_config(monitors)
     print("\n")
     print(meta_code)
-
