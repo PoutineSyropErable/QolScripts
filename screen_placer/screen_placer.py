@@ -87,42 +87,6 @@ def get_best_monitor_modes():
     return best_modes
 
 
-class MonitorOld:
-    def __init__(self, name: str, position: Tuple[int, int], resolution: Tuple[int, int], refresh_rate: float):
-        """
-        :param name: str, monitor identifier
-        :param position: tuple (x, y) in pixels
-        :param resolution: tuple (width, height) in pixels
-        """
-        self.name = name
-        self.position: NDArray[np.float64] = np.array(list(position))  # (x, y)
-        self.resolution = resolution  # (width, height)
-        self.color = self._random_light_color()
-        self.canvas_id = None  # stores the canvas rectangle ID
-        self.refresh_rate = refresh_rate
-        self.text_id = None  # stores the canvas text ID
-
-    def _random_light_color(self):
-        """
-        Generate a random light color using HLS:
-        - Hue: random 0-1
-        - Lightness: high (0.75 - 0.9)
-        - Saturation: medium (0.4 - 0.7)
-        Returns hex string color like "#aabbcc"
-        """
-        h = random.random()
-        l = random.uniform(0.75, 0.9)
-        s = random.uniform(0.4, 0.7)
-        r, g, b = hls_to_rgb(h, l, s)
-        return f"#{int(r*255):02x}{int(g*255):02x}{int(b*255):02x}"
-
-    def __repr__(self):
-        return (
-            f"Monitor(name={self.name}, position={self.position}, resolution={self.resolution}, "
-            f"refresh_rate={self.refresh_rate}, color={self.color})"
-        )
-
-
 class Monitor:
     def __init__(
         self, name: str, position: Tuple[int, int], resolution: Tuple[int, int], refresh_rate: float, transform: int = 0, scale: float = 1.0
