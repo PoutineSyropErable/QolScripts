@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-from typing import List, Dict, Tuple, Literal
+from typing import List, Dict, Tuple, Literal, cast, Any
 from numpy.typing import NDArray
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
 
 import subprocess, os, sys, argparse
+import json
 import numpy as np
 import time
 import re
@@ -18,6 +19,10 @@ MAIN_MONITOR = "DP-1"
 
 ACCEPTABLE_SCALE = [0.5, 0.75, 1, 1.25, 1.6]
 SCALE_STEP = 0.25
+
+# Global flag: use current monitors or default layout
+USE_DEFAULT_MONITOR_STATE: bool = False
+USE_CURRENT_MONITOR_STATE = not USE_DEFAULT_MONITOR_STATE
 
 
 def notify_send(summary: str, body: str = "", urgency: str = "normal", timeout: int = 5000):
@@ -194,6 +199,9 @@ class Monitor:
 
 
 def create_monitors() -> List[Monitor]:
+    """
+    default creation
+    """
     best_modes = get_best_monitor_modes()
     monitors = []
     x_offset = 0
@@ -210,6 +218,89 @@ def create_monitors() -> List[Monitor]:
             break
     print(f"monitors = {monitors}")
     return monitors
+
+
+def get_current_monitor_states() -> List[Dict[str, Any]]:
+    """
+    Obtain the state of currently active monitors using 'hyprctl monitors -j'.
+    Returns a list of dictionaries, each representing a monitor's state.
+    """
+    monitor_states: List[Dict[str, Any]] = []
+    try:
+        result: subprocess.CompletedProcess[str] = subprocess.run(["hyprctl", "monitors", "-j"], capture_output=True, text=True, check=True)
+        monitors_json: List[Dict[str, Any]] = json.loads(result.stdout)
+
+        for mon in monitors_json:
+            state: Dict[str, Any] = {
+                "name": cast(str, mon.get("name", "Unknown")),
+                "position": cast(Tuple[int, int], (mon.get("x", 0), mon.get("y", 0))),
+                "resolution": cast(Tuple[int, int], (mon.get("width", 1920), mon.get("height", 1080))),
+                "refresh_rate": float(mon.get("refresh_rate", 60)),
+                "transform": int(mon.get("transform", 0)),
+                "scale": float(mon.get("scale", 1.0)),
+            }
+            monitor_states.append(state)
+    except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
+        print(f"Failed to get monitor states: {e}")
+
+    return monitor_states
+
+
+def create_monitors_from_state(state_list: List[Dict[str, Any]]) -> List["Monitor"]:
+    """
+    Create Monitor instances and initialize their GUI rectangles from a state list.
+    Performs runtime type checking and casting to prevent errors.
+    """
+    monitors: List["Monitor"] = []
+
+    for state in state_list:
+        # Type casting
+        name = cast(str, state.get("name"))
+        position = cast(Tuple[int, int], state.get("position"))
+        resolution = cast(Tuple[int, int], state.get("resolution"))
+        refresh_rate = cast(float, state.get("refresh_rate"))
+        transform = cast(int, state.get("transform"))
+        scale = cast(float, state.get("scale"))
+
+        # Runtime validation
+        if not isinstance(name, str):
+            raise TypeError(f"Expected str for name, got {type(name).__name__}")
+        if not (isinstance(position, tuple) and len(position) == 2 and all(isinstance(i, int) for i in position)):
+            raise TypeError(f"Expected Tuple[int, int] for position, got {position}")
+        if not (isinstance(resolution, tuple) and len(resolution) == 2 and all(isinstance(i, int) for i in resolution)):
+            raise TypeError(f"Expected Tuple[int, int] for resolution, got {resolution}")
+        if not isinstance(refresh_rate, float):
+            raise TypeError(f"Expected float for refresh_rate, got {type(refresh_rate).__name__}")
+        if not isinstance(transform, int):
+            raise TypeError(f"Expected int for transform, got {type(transform).__name__}")
+        if not isinstance(scale, float):
+            raise TypeError(f"Expected float for scale, got {type(scale).__name__}")
+
+        # Create monitor instance
+        mon = Monitor(
+            name=name,
+            position=position,
+            resolution=resolution,
+            refresh_rate=refresh_rate,
+            transform=transform,
+            scale=scale,
+        )
+
+        mon.create_rectangle(canvas, scale)  # Draw in GUI
+        monitors.append(mon)
+
+    return monitors
+
+
+def initialize_monitors() -> List["Monitor"]:
+    """
+    Entry point to set up monitors: either from current system state or default configuration.
+    """
+    if USE_CURRENT_MONITOR_STATE:
+        state_list = get_current_monitor_states()
+        return create_monitors_from_state(state_list)
+
+    return create_monitors()  # fallback to default monitors
 
 
 def calculate_canvas_position(window_width, window_height, canvas_width, canvas_height):
@@ -757,7 +848,7 @@ def generate_hypr_monitor_config(monitors: List[Monitor]) -> str:
 
 if __name__ == "__main__":
     print("\n\n====Start of program=====\n\n")
-    monitors: List[Monitor] = create_monitors()
+    monitors: List[Monitor] = initialize_monitors()
     draw_monitors(monitors)
     positions: dict[str, np.ndarray] = {}
     all_pos = []
