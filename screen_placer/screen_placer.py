@@ -310,6 +310,10 @@ def draw_monitors(monitors):
     root = tk.Tk()
     root.title("Monitor Layout")
 
+    default_width = 1200
+    default_height = 800
+    root.geometry(f"{default_width}x{default_height}")
+
     def quit_program(event=None):
         root.destroy()
 
@@ -318,6 +322,9 @@ def draw_monitors(monitors):
     root.bind("v", toggle_vertical)
 
     drag_data = {"x": 0, "y": 0, "item": None, "monitor": None}
+
+    canvas = tk.Canvas(root, bg="white")
+    canvas.pack(fill="both", expand=True)
 
     def get_rectangle_corners(canvas, rect_id) -> np.ndarray:
         """
@@ -527,13 +534,27 @@ def draw_monitors(monitors):
                 update_bounding_box()
                 print(f"Rotated {mon.name} anticlockwise to {mon.get_rotation()}°")
 
+        # =====
         def increase_scale(event=None):
             """Increase scale of the monitor under mouse cursor"""
             mon = get_selected_monitor(event)
             if mon:
                 new_scale = min(mon.scale + 0.1, 3.0)  # Cap at 3.0x
                 mon.set_scale(new_scale)
+                # Update the rectangle dimensions based on new effective resolution
+                x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
+                center_x, center_y = (x1 + x2) / 2, (y1 + y2) / 2
+                # Use effective resolution (scaled)
+                effective_w, effective_h = mon.get_effective_resolution()
+                new_w = effective_w * scale
+                new_h = effective_h * scale
+                new_x1 = center_x - new_w / 2
+                new_y1 = center_y - new_h / 2
+                new_x2 = center_x + new_w / 2
+                new_y2 = center_y + new_h / 2
+                canvas.coords(mon.canvas_id, new_x1, new_y1, new_x2, new_y2)
                 update_monitor_display(mon)
+                update_bounding_box()
                 print(f"Scaled {mon.name} to {mon.scale:.1f}x")
 
         def decrease_scale(event=None):
@@ -542,11 +563,23 @@ def draw_monitors(monitors):
             if mon:
                 new_scale = max(mon.scale - 0.1, 0.5)  # Minimum 0.5x
                 mon.set_scale(new_scale)
+                # Update the rectangle dimensions based on new effective resolution
+                x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
+                center_x, center_y = (x1 + x2) / 2, (y1 + y2) / 2
+                # Use effective resolution (scaled)
+                effective_w, effective_h = mon.get_effective_resolution()
+                new_w = effective_w * scale
+                new_h = effective_h * scale
+                new_x1 = center_x - new_w / 2
+                new_y1 = center_y - new_h / 2
+                new_x2 = center_x + new_w / 2
+                new_y2 = center_y + new_h / 2
+                canvas.coords(mon.canvas_id, new_x1, new_y1, new_x2, new_y2)
                 update_monitor_display(mon)
+                update_bounding_box()
                 print(f"Scaled {mon.name} to {mon.scale:.1f}x")
 
-            # Update instructions
-
+        # =====
         def draw_instructions(canvas, x=10, y=10):
             instructions = [
                 "ESC to stop",
@@ -715,8 +748,6 @@ def draw_monitors(monitors):
         canvas.bind("<B1-Motion>", on_drag)
         canvas.bind("<ButtonRelease-1>", on_end_drag)
 
-    canvas = tk.Canvas(root, bg="white")
-    canvas.pack(fill="both", expand=True)
     root.after(500, on_ready)
     draw_instructions(canvas)
     root.mainloop()
@@ -731,14 +762,14 @@ def generate_hypr_monitor_config(monitors: List[Monitor]) -> str:
     lines = []
     for mon in monitors:
         name = mon.name
-        width, height = mon.get_effective_resolution()  # Use scaled resolution
+        width, height = mon.resolution  # Use scaled resolution
         x, y = map(int, mon.position)
         refresh = int(round(mon.refresh_rate))
         transform = mon.transform
         scale = mon.scale
 
         # Format as required by Hyprland with transform and scale
-        lines.append(f"monitor={name},{width}x{height}@{refresh},{x}x{y},{scale},transform,{transform}")
+        lines.append(f"monitor={name},{width}x{height}@{refresh},{x}x{y},{scale:.2f},transform,{transform}")
     return "\n".join(lines)
 
 
