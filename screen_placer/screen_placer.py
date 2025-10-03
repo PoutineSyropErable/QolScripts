@@ -329,29 +329,6 @@ def draw_monitors(monitors):
     canvas = tk.Canvas(root, bg="white")
     canvas.pack(fill="both", expand=True)
 
-    def get_rectangle_corners(canvas, rect_id) -> np.ndarray:
-        """
-        Given a Tkinter canvas and a rectangle canvas ID,
-        return the positions of the four corners as a 4x2 numpy array.
-
-        The order of corners returned is:
-        top-left, top-right, bottom-right, bottom-left
-        """
-        coords = canvas.coords(rect_id)  # [x1, y1, x2, y2]
-        if len(coords) != 4:
-            # Item does not exist or coords are invalid
-            raise ValueError(f"Invalid rectangle coords for item {rect_id}: {coords}")
-        x1, y1, x2, y2 = coords
-        corners = np.array(
-            [
-                [x1, y1],  # top-left
-                [x2, y1],  # top-right
-                [x2, y2],  # bottom-right
-                [x1, y2],  # bottom-left
-            ]
-        )
-        return corners
-
     def on_ready():
         window_width = root.winfo_width()
         window_height = root.winfo_height()
@@ -453,24 +430,6 @@ def draw_monitors(monitors):
             left_corner[0], left_corner[1], right_bottom_corner[0], right_bottom_corner[1], outline="blue", fill="", width=2
         )
 
-        def update_monitor_display(mon):
-            """Update the visual representation of a monitor after rotation or scale change"""
-            # Remove old text
-            canvas.delete(mon.text_id)
-
-            # Get current canvas coordinates
-            x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
-
-            # Update text with new rotation and scale info
-            text_content = f"{mon.name}\n{mon.get_rotation()}°\n{mon.scale:.2f}x"
-            mon.text_id = canvas.create_text(
-                (x1 + x2) / 2,
-                (y1 + y2) / 2,
-                text=text_content,
-                fill="black",
-                font=("Arial", max(8, int(14 * scale)), "bold"),
-            )
-
         def get_selected_monitor(event=None):
             """Get the monitor closest to mouse position using center distance"""
             if event is None:
@@ -499,6 +458,24 @@ def draw_monitors(monitors):
 
             return closest_monitor
 
+        def update_monitor_display(mon):
+            """Update the visual representation of a monitor after rotation or scale change"""
+            # Remove old text
+            canvas.delete(mon.text_id)
+
+            # Get current canvas coordinates
+            x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
+
+            # Update text with new rotation and scale info
+            text_content = f"{mon.name}\n{mon.get_rotation()}°\n{mon.scale:.2f}x"
+            mon.text_id = canvas.create_text(
+                (x1 + x2) / 2,
+                (y1 + y2) / 2,
+                text=text_content,
+                fill="black",
+                font=("Arial", max(8, int(14 * scale)), "bold"),
+            )
+
         def rotate_selected_clockwise(event=None):
             """Rotate the monitor under mouse cursor clockwise"""
             mon = get_selected_monitor(event)
@@ -507,14 +484,15 @@ def draw_monitors(monitors):
                 # Update the rectangle dimensions based on new resolution
                 x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
                 center_x, center_y = (x1 + x2) / 2, (y1 + y2) / 2
-                new_w = mon.resolution[0] * scale
-                new_h = mon.resolution[1] * scale
+                new_w = mon.resolution[0] * scale / mon.scale
+                new_h = mon.resolution[1] * scale / mon.scale
                 new_x1 = center_x - new_w / 2
                 new_y1 = center_y - new_h / 2
                 new_x2 = center_x + new_w / 2
                 new_y2 = center_y + new_h / 2
                 canvas.coords(mon.canvas_id, new_x1, new_y1, new_x2, new_y2)
                 update_monitor_display(mon)
+                # TODO, MAYBE HERE
                 update_bounding_box()
                 print(f"Rotated {mon.name} clockwise to {mon.get_rotation()}°")
 
@@ -526,8 +504,8 @@ def draw_monitors(monitors):
                 # Update the rectangle dimensions based on new resolution
                 x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
                 center_x, center_y = (x1 + x2) / 2, (y1 + y2) / 2
-                new_w = mon.resolution[0] * scale
-                new_h = mon.resolution[1] * scale
+                new_w = mon.resolution[0] * scale / mon.scale
+                new_h = mon.resolution[1] * scale / mon.scale
                 new_x1 = center_x - new_w / 2
                 new_y1 = center_y - new_h / 2
                 new_x2 = center_x + new_w / 2
