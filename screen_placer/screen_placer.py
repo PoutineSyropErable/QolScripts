@@ -205,6 +205,7 @@ def create_monitors() -> List[Monitor]:
             dp2 = monitors.pop(i)
             monitors.insert(0, dp2)
             break
+    print(f"monitors = {monitors}")
     return monitors
 
 
@@ -274,7 +275,16 @@ def calculate_monitor_offset(monitors):
 
 
 def draw_instructions(canvas, x=10, y=10):
-    instructions = ["ESC to stop", "Mouse to drag", "H to toggle horizontal align", "V to toggle vertical align"]
+    instructions = [
+        "ESC to stop",
+        "Mouse to drag",
+        "H to toggle horizontal align",
+        "V to toggle vertical align",
+        "R to rotate clockwise",
+        "Shift+R to rotate anticlockwise",
+        "S to increase scale",
+        "Shift+S to decrease scale",
+    ]
     for i, line in enumerate(instructions):
         canvas.create_text(
             x, y + i * 20, text=line, fill="black", anchor="nw", font=("Arial", 12, "bold")  # north-west anchor, so x,y is top-left of text
@@ -412,10 +422,12 @@ def draw_monitors(monitors):
             scaled_ys.append(scaled_y)
             scaled_ys.append(scaled_y + scaled_h)
 
+            # Update text to include scale and rotation info
+            text_content = f"{mon.name}\n{mon.get_rotation()}°\n{mon.scale:.1f}x"
             text = canvas.create_text(
                 scaled_x + scaled_w / 2,
                 scaled_y + scaled_h / 2,
-                text=mon.name,
+                text=text_content,
                 fill="black",
                 font=("Arial", max(8, int(14 * scale)), "bold"),
             )
@@ -430,6 +442,133 @@ def draw_monitors(monitors):
         bounding_rect_id = canvas.create_rectangle(
             left_corner[0], left_corner[1], right_bottom_corner[0], right_bottom_corner[1], outline="blue", fill="", width=2
         )
+
+        def update_monitor_display(mon):
+            """Update the visual representation of a monitor after rotation or scale change"""
+            # Remove old text
+            canvas.delete(mon.text_id)
+
+            # Get current canvas coordinates
+            x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
+
+            # Update text with new rotation and scale info
+            text_content = f"{mon.name}\n{mon.get_rotation()}°\n{mon.scale:.1f}x"
+            mon.text_id = canvas.create_text(
+                (x1 + x2) / 2,
+                (y1 + y2) / 2,
+                text=text_content,
+                fill="black",
+                font=("Arial", max(8, int(14 * scale)), "bold"),
+            )
+
+        def get_selected_monitor(event=None):
+            """Get the monitor closest to mouse position using center distance"""
+            if event is None:
+                return None
+
+            mouse_pos = np.array([event.x, event.y])
+            closest_monitor = None
+            min_distance = float("inf")
+
+            for mon in monitors:
+                if mon.canvas_id:
+                    # Get monitor center in canvas coordinates
+                    coords = canvas.coords(mon.canvas_id)
+                    if len(coords) == 4:
+                        x1, y1, x2, y2 = coords
+                        center_x = (x1 + x2) / 2
+                        center_y = (y1 + y2) / 2
+                        center_pos = np.array([center_x, center_y])
+
+                        # Calculate distance to mouse
+                        distance = np.linalg.norm(center_pos - mouse_pos)
+
+                        if distance < min_distance:
+                            min_distance = distance
+                            closest_monitor = mon
+
+            return closest_monitor
+
+        def rotate_selected_clockwise(event=None):
+            """Rotate the monitor under mouse cursor clockwise"""
+            mon = get_selected_monitor(event)
+            if mon:
+                mon.rotate_clockwise()
+                # Update the rectangle dimensions based on new resolution
+                x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
+                center_x, center_y = (x1 + x2) / 2, (y1 + y2) / 2
+                new_w = mon.resolution[0] * scale
+                new_h = mon.resolution[1] * scale
+                new_x1 = center_x - new_w / 2
+                new_y1 = center_y - new_h / 2
+                new_x2 = center_x + new_w / 2
+                new_y2 = center_y + new_h / 2
+                canvas.coords(mon.canvas_id, new_x1, new_y1, new_x2, new_y2)
+                update_monitor_display(mon)
+                update_bounding_box()
+                print(f"Rotated {mon.name} clockwise to {mon.get_rotation()}°")
+
+        def rotate_selected_anticlockwise(event=None):
+            """Rotate the monitor under mouse cursor anticlockwise"""
+            mon = get_selected_monitor(event)
+            if mon:
+                mon.rotate_anticlockwise()
+                # Update the rectangle dimensions based on new resolution
+                x1, y1, x2, y2 = canvas.coords(mon.canvas_id)
+                center_x, center_y = (x1 + x2) / 2, (y1 + y2) / 2
+                new_w = mon.resolution[0] * scale
+                new_h = mon.resolution[1] * scale
+                new_x1 = center_x - new_w / 2
+                new_y1 = center_y - new_h / 2
+                new_x2 = center_x + new_w / 2
+                new_y2 = center_y + new_h / 2
+                canvas.coords(mon.canvas_id, new_x1, new_y1, new_x2, new_y2)
+                update_monitor_display(mon)
+                update_bounding_box()
+                print(f"Rotated {mon.name} anticlockwise to {mon.get_rotation()}°")
+
+        def increase_scale(event=None):
+            """Increase scale of the monitor under mouse cursor"""
+            mon = get_selected_monitor(event)
+            if mon:
+                new_scale = min(mon.scale + 0.1, 3.0)  # Cap at 3.0x
+                mon.set_scale(new_scale)
+                update_monitor_display(mon)
+                print(f"Scaled {mon.name} to {mon.scale:.1f}x")
+
+        def decrease_scale(event=None):
+            """Decrease scale of the monitor under mouse cursor"""
+            mon = get_selected_monitor(event)
+            if mon:
+                new_scale = max(mon.scale - 0.1, 0.5)  # Minimum 0.5x
+                mon.set_scale(new_scale)
+                update_monitor_display(mon)
+                print(f"Scaled {mon.name} to {mon.scale:.1f}x")
+
+            # Update instructions
+
+        def draw_instructions(canvas, x=10, y=10):
+            instructions = [
+                "ESC to stop",
+                "Mouse to drag",
+                "H to toggle horizontal align",
+                "V to toggle vertical align",
+                "R to rotate clockwise",
+                "Shift+R to rotate anticlockwise",
+                "S to increase scale",
+                "Shift+S to decrease scale",
+            ]
+            for i, line in enumerate(instructions):
+                canvas.create_text(x, y + i * 20, text=line, fill="black", anchor="nw", font=("Arial", 12, "bold"))
+
+        # Bind rotation and scale keys
+        root.bind("r", rotate_selected_clockwise)
+        root.bind("R", rotate_selected_anticlockwise)  # Shift+R
+        root.bind("s", increase_scale)
+        root.bind("S", decrease_scale)  # Shift+S
+        root.bind("<plus>", decrease_scale)  # Shift+S
+        root.bind("<equal>", decrease_scale)  # Shift+S
+        root.bind("<minus>", decrease_scale)  # Shift+S
 
         def update_bounding_box():
             scaled_xs = []
@@ -587,17 +726,19 @@ def generate_hypr_monitor_config(monitors: List[Monitor]) -> str:
     """
     Generate Hyprland monitor config lines from a list of Monitor objects.
     Output lines like:
-    monitor=DP-1,2560x1440@60,0x0,1
+    monitor=DP-1,2560x1440@60,0x0,1,transform,1
     """
     lines = []
     for mon in monitors:
         name = mon.name
-        width, height = mon.resolution
+        width, height = mon.get_effective_resolution()  # Use scaled resolution
         x, y = map(int, mon.position)
         refresh = int(round(mon.refresh_rate))
+        transform = mon.transform
+        scale = mon.scale
 
-        # Format as required by Hyprland
-        lines.append(f"monitor={name},{width}x{height}@{refresh},{x}x{y},1")
+        # Format as required by Hyprland with transform and scale
+        lines.append(f"monitor={name},{width}x{height}@{refresh},{x}x{y},{scale},transform,{transform}")
     return "\n".join(lines)
 
 
